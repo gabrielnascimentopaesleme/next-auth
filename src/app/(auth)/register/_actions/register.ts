@@ -32,8 +32,5 @@ export default async function register(FormData: FormData) {
     },
   });
 
-  console.log(entries);
-  console.log(name, email, password);
-
   redirect('/');
 }

@@ -14,12 +14,16 @@ export default async function login(FormData: FormData){
       email,
       password,
     });
-  } catch (e) {
-    if (e instanceof AuthError) {
-      if (e.type === 'CredentialsSignin') {
+  } catch (error) {
+    if (error instanceof AuthError) {
+      if (error.type === 'CredentialsSignin') {
         throw new Error('Credenciais inválidas');
       }
+      if (error.type === 'CallbackRouteError') {
+        throw new Error('Ocorreu um erro ao validar as informações.')
+      }
     }
+    throw error
   }
 
   redirect('/');

@@ -14,10 +14,10 @@ const providers: Provider[] = [
       email: { label: 'Email', type: 'text' },
       password: { label: 'Password', type: 'password' },
     },
-    async authorize(credentials) {
+    authorize: async (credentials) => {
       const email = credentials.email as string;
       const password = credentials.password as string;
-      if (!credentials.email || !credentials.password) {
+      if (!email || !password) {
         return null;
       }
 
@@ -27,15 +27,17 @@ const providers: Provider[] = [
         },
       });
 
-      if (!user) return null;
+      if (!user) {
+        throw new Error('Credenciais Inválidas');
+      }
 
       const testPassword = compareSync(password, user.password ?? '');
 
-      if (testPassword) {
-        return { id: user.id, name: user.name, email: user.email };
+      if (!testPassword) {
+        throw new Error('Credenciais inválidas.');
       }
 
-      return null;
+      return user;
     },
   }),
   GitHub,
@@ -56,4 +58,20 @@ export const providerMap = providers
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers,
+  session: {
+    strategy: 'jwt', // Usa JWT em vez de sessões baseadas em banco de dados
+  },
+  callbacks: {
+    jwt({ token, user }) {
+      // Adiciona informações do usuário ao token durante o login
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    session({session, token}) {
+      session.user.id = token.id as string
+      return session
+    }
+  },
 });
