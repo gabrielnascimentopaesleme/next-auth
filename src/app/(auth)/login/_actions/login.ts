@@ -1,5 +1,6 @@
 'use server'
-
+import { AuthError } from 'next-auth';
+import { redirect } from 'next/navigation';
 import { signIn } from "auth";
 
 export default async function login(FormData: FormData){
@@ -8,7 +9,18 @@ export default async function login(FormData: FormData){
     email: string
     password: string 
   }
-  console.log(email, password)
+  try {
+    await signIn('credentials', {
+      email,
+      password,
+    });
+  } catch (e) {
+    if (e instanceof AuthError) {
+      if (e.type === 'CredentialsSignin') {
+        throw new Error('Credenciais inválidas');
+      }
+    }
+  }
 
-  await signIn('credentials', {email, password})
+  redirect('/');
 }
