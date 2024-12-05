@@ -1,31 +1,25 @@
-'use client';
-
 import Link from 'next/link';
+import { signIn } from 'auth';
 
-
-export default function RegisterForm() {
+export default function LoginForm() {
   return (
     <>
       <div className="mx-auto max-w-96 bg-slate-800 text-white p-8">
         <div>
           <div className="flex items-center justify-center gap-2">
             <div className="w-6 h-6" />
-            Cadastre-se
+            Faça Login
           </div>
-          <div>Crie uma conta gratuitamente</div>
         </div>
         <div>
-          <form className="text-left ">
+          <form
+            action={async () => {
+              'use server';
+              await signIn();
+            }}
+            className="text-left text-black"
+          >
             <div className="space-y-6">
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-                <label htmlFor="name">Nome</label>
-                <input
-                  name="name"
-                  type="name"
-                  id="name"
-                  placeholder="Fulano de Tal"
-                />
-              </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <label htmlFor="email">Email</label>
                 <input
@@ -46,27 +40,17 @@ export default function RegisterForm() {
               </div>
             </div>
             <button type="submit" className="w-full mt-10 ">
-              Registrar
+              Login
             </button>
           </form>
         </div>
         <div>
-          <Link
-            className={(
-              'mt-2 mx-auto'
-            )}
-            href="/login"
-          >
-            Já possui conta?
+          <Link className={'mt-2 mx-auto'} href="/api/register">
+            Não possui conta? Registre-se
           </Link>
         </div>
       </div>
-      <Link
-        
-        href="/"
-      >
-        Voltar para Home
-      </Link>
+      <Link href="/">Voltar para Home</Link>
     </>
   );
 }
