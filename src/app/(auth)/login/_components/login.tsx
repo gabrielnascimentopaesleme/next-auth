@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { signIn, providerMap } from 'auth';
 import { AuthError } from 'next-auth';
-import { redirect } from 'next/navigation';
+import { FaGoogle, FaGithub } from 'react-icons/fa';
 
 import login from '../_actions/login';
 
@@ -17,7 +17,7 @@ export default function LoginForm(props: {
           </div>
         </div>
         <div>
-          <form action={login} className="p-6 pt-4">
+          <form action={login} className="p-6 pt-0">
             <div className="flex flex-col gap-8 items-center ">
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <label className="text-xl text-slate-200" htmlFor="email">
@@ -44,7 +44,7 @@ export default function LoginForm(props: {
                 />
               </div>
             </div>
-            <div className="flex justify-center p-6 pb-0 mt-4">
+            <div className="flex justify-center p-6 pb-0">
               <button
                 type="submit"
                 className="text-xl px-10 py-2 rounded-lg text-slate-200 border bg-green-600"
@@ -53,28 +53,33 @@ export default function LoginForm(props: {
               </button>
             </div>
           </form>
-          {Object.values(providerMap).map((provider) => (
-            <form
-              key={provider.id}
-              action={async () => {
-                'use server';
-                try {
-                  await signIn(provider.id, {
-                    redirectTo: props.searchParams?.callbackUrl ?? '',
-                  });
-                } catch (error) {
-                  if (error instanceof AuthError) {
-                    throw new Error('Opa, ocorreu um erro inesperado!');
-                  }
-                  throw error;
-                }
-              }}
-            >
-              <button type="submit">
-                <span>Sign in with {provider.name}</span>
-              </button>
-            </form>
-          ))}
+          <div className='text-center flex flex-col gap-3'>
+            <p>Faça login com:</p>
+            <div className="flex justify-center gap-6 ">
+              {Object.values(providerMap).map((provider) => (
+                <form
+                  key={provider.id}
+                  action={async () => {
+                    'use server';
+                    try {
+                      await signIn(provider.id, {
+                        redirectTo: props.searchParams?.callbackUrl ?? '',
+                      });
+                    } catch (error) {
+                      if (error instanceof AuthError) {
+                        throw new Error('Opa, ocorreu um erro inesperado!');
+                      }
+                      throw error;
+                    }
+                  }}
+                >
+                  <button className='text-2xl' type="submit">
+                    {provider.name === 'Google'? (<FaGoogle/>) : (<FaGithub/>)} 
+                  </button>
+                </form>
+              ))}
+            </div>
+          </div>
         </div>
         <div className="p-6 pt-0 flex justify-center gap-1">
           <p>Não possui conta?</p>
