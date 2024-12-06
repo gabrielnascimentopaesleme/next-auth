@@ -3,10 +3,6 @@ import RegisterForm from './_components/registro';
 import { auth } from 'auth';
 import { redirect } from 'next/navigation';
 
-
-export default async function Register() {
-  
+export default function Register() {
   return <RegisterForm />;
-};
-
-
+}

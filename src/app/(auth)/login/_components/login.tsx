@@ -1,8 +1,13 @@
 import Link from 'next/link';
+import { signIn, providerMap } from 'auth';
+import { AuthError } from 'next-auth';
+import { redirect } from 'next/navigation';
 
 import login from '../_actions/login';
 
-export default function LoginForm() {
+export default function LoginForm(props: {
+  searchParams: { callbackUrl: string | undefined };
+}) {
   return (
     <div className="h-screen flex items-center">
       <div className="rounded-md flex flex-col gap-8 mx-auto w-1/3 h-4/5 bg-slate-800 text-white py-8">
@@ -48,10 +53,34 @@ export default function LoginForm() {
               </button>
             </div>
           </form>
+          {Object.values(providerMap).map((provider) => (
+            <form
+              key={provider.id}
+              action={async () => {
+                'use server';
+                try {
+                  await signIn(provider.id, {
+                    redirectTo: props.searchParams?.callbackUrl ?? '',
+                  });
+                } catch (error) {
+                  if (error instanceof AuthError) {
+                    throw new Error('Opa, ocorreu um erro inesperado!');
+                  }
+                  throw error;
+                }
+              }}
+            >
+              <button type="submit">
+                <span>Sign in with {provider.name}</span>
+              </button>
+            </form>
+          ))}
         </div>
         <div className="p-6 pt-0 flex justify-center gap-1">
           <p>Não possui conta?</p>
-          <Link className='underline decoration-slate-50' href="/register">Registre-se</Link>
+          <Link className="underline decoration-slate-50" href="/register">
+            Registre-se
+          </Link>
         </div>
       </div>
     </div>
