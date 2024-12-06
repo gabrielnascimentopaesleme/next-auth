@@ -3,10 +3,10 @@ import React from 'react';
 
 type Props = {};
 
-export default function credentials() {
+export default function Credentials() {
   return (
     <div>
-      <Link href={'/login'}>Login com credenciais</Link>
+      <Link href={'/login'}>Tela de Login</Link>
     </div>
   );
 }
