@@ -31,7 +31,7 @@ export default function LoginForm() {
                   Senha
                 </label>
                 <input
-                  className="text-base text-slate-950 p-1.5"
+                  className="text-base p-1.5"
                   name="password"
                   type="password"
                   id="password"

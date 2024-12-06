@@ -3,24 +3,25 @@
 import Link from 'next/link';
 import register from '../_actions/register';
 
-
 export default function RegisterForm() {
   return (
-    <>
-      <div className="mx-auto max-w-96 bg-slate-800 text-white p-8">
+    <div className="h-screen flex items-center justify-center flex-col gap-4">
+      <div className="rounded-md flex flex-col gap-6 mx-auto w-1/3 h-4/5 bg-slate-800 text-white">
         <div>
-          <div className="flex items-center justify-center gap-2">
-            <div className="w-6 h-6" />
-            Cadastre-se
+          <div className="flex flex-col items-center justify-center gap-2">
+            <h1 className="text-3xl font-bold mt-2">Cadastre-se</h1>
+            <h2>Crie uma conta gratuitamente</h2>
           </div>
-          <div>Crie uma conta gratuitamente</div>
         </div>
         <div>
-          <form action={register} className="text-left text-black">
-            <div className="space-y-6">
+          <form action={register} className="px-6">
+            <div className="flex flex-col gap-8 items-center ">
               <div className="grid w-full max-w-sm items-center gap-1.5">
-                <label htmlFor="name">Nome</label>
+                <label className="text-xl text-slate-200" htmlFor="name">
+                  Nome
+                </label>
                 <input
+                  className="text-base text-slate-950 p-1.5"
                   name="name"
                   type="name"
                   id="name"
@@ -28,8 +29,11 @@ export default function RegisterForm() {
                 />
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
-                <label htmlFor="email">Email</label>
+                <label className="text-xl text-slate-200" htmlFor="email">
+                  Email
+                </label>
                 <input
+                  className="text-base text-slate-950 p-1.5"
                   name="email"
                   type="email"
                   id="email"
@@ -37,8 +41,11 @@ export default function RegisterForm() {
                 />
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
-                <label htmlFor="password">Senha</label>
+                <label className="text-xl text-slate-200" htmlFor="password">
+                  Senha
+                </label>
                 <input
+                  className="text-base text-slate-950 p-1.5"
                   name="password"
                   type="password"
                   id="password"
@@ -46,28 +53,22 @@ export default function RegisterForm() {
                 />
               </div>
             </div>
-            <button type="submit" className="w-full mt-10 ">
-              Registrar
-            </button>
+            <div className="flex justify-center p-6 pb-0">
+              <button
+                type="submit"
+                className="text-xl px-10 py-2 rounded-lg text-slate-200 border bg-green-600"
+              >
+                Registrar
+              </button>
+            </div>
           </form>
         </div>
-        <div>
-          <Link
-            className={(
-              'mt-2 mx-auto'
-            )}
-            href="/login"
-          >
-            Já possui conta?
-          </Link>
+        <div className="p-6 pt-0 flex justify-center gap-1">
+        <p>Já possui conta?</p>
+        <Link className='underline decoration-slate-50' href="/login">Faça Login</Link>
         </div>
       </div>
-      <Link
-        
-        href="/"
-      >
-        Voltar para Home
-      </Link>
-    </>
+      <Link href="/">Voltar para Home</Link>
+    </div>
   );
 }
